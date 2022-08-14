@@ -1,0 +1,127 @@
+from tkinter import*
+import os
+import pygame
+import pygame.mixer_music
+from tkinter import messagebox
+from PIL import Image, ImageTk
+import subprocess
+import sys
+t=Tk()
+t.geometry("1079x621")
+
+def fun4():
+    subprocess.call([sys.executable, 'game3.py'])
+
+def fun3():
+    class MusicPlayer:
+        def __init__(self, root):
+            self.root = root
+            self.root.title(" Game Songs")
+            self.root.geometry("1000x200+200+200")
+            pygame.init()
+            pygame.mixer.init()
+            self.track = StringVar()
+            self.status = StringVar()
+            trackframe = LabelFrame(self.root, text="Song Track", font=("times new roman", 15, "bold"), bg="grey",
+                                    fg="white", bd=5, relief=GROOVE)
+            trackframe.place(x=0, y=0, width=600, height=100)
+            songtrack = Label(trackframe, textvariable=self.track, width=20, font=("times new roman", 24, "bold"),
+                              bg="grey", fg="gold").grid(row=0, column=0, padx=10, pady=5)
+            trackstatus = Label(trackframe, textvariable=self.status, font=("times new roman", 24, "bold"), bg="grey",
+                                fg="gold").grid(row=0, column=1, padx=10, pady=5)
+            buttonframe = LabelFrame(self.root, text="Control Panel", font=("times new roman", 15, "bold"), bg="grey",
+                                     fg="white", bd=5, relief=GROOVE)
+            buttonframe.place(x=0, y=100, width=600, height=100)
+            playbtn = Button(buttonframe, text="PLAY", command=self.playsong, width=6, height=1,
+                             font=("times new roman", 16, "bold"), fg="navyblue", bg="gold").grid(row=0, column=0,
+                                                                                                  padx=10, pady=5)
+            playbtn = Button(buttonframe, text="PAUSE", command=self.pausesong, width=8, height=1,
+                             font=("times new roman", 16, "bold"), fg="navyblue", bg="gold").grid(row=0, column=1,
+                                                                                                  padx=10, pady=5)
+            playbtn = Button(buttonframe, text="UNPAUSE", command=self.unpausesong, width=10, height=1,
+                             font=("times new roman", 16, "bold"), fg="navyblue", bg="gold").grid(row=0, column=2,
+                                                                                                  padx=10, pady=5)
+            playbtn = Button(buttonframe, text="STOP", command=self.stopsong, width=6, height=1,
+                             font=("times new roman", 16, "bold"), fg="navyblue", bg="gold").grid(row=0, column=3,
+                                                                                                  padx=10, pady=5)
+            playbtn = Button(buttonframe, text="Back",command=self.back, width=6, height=1,
+                             font=("times new roman", 16, "bold"), fg="navyblue", bg="gold").grid(row=0, column=4,
+                                                                                                  padx=10, pady=5)
+            songsframe = LabelFrame(self.root, text="Song Playlist", font=("times new roman", 15, "bold"), bg="grey",
+                                    fg="white", bd=5, relief=GROOVE)
+            songsframe.place(x=600, y=0, width=400, height=200)
+            scrol_y = Scrollbar(songsframe, orient=VERTICAL)
+            self.playlist = Listbox(songsframe, yscrollcommand=scrol_y.set, selectbackground="gold", selectmode=SINGLE,
+                                    font=("times new roman", 12, "bold"), bg="silver", fg="navyblue", bd=5,
+                                    relief=GROOVE)
+            scrol_y.pack(side=RIGHT, fill=Y)
+            scrol_y.config(command=self.playlist.yview)
+            self.playlist.pack(fill=BOTH)
+            #os.chdir("C:/Users/SACHIN/Music")
+            songtracks = os.listdir()
+            for track in songtracks:
+                self.playlist.insert(END, track)
+
+        def playsong(self):
+            self.track.set(self.playlist.get(ACTIVE))
+            self.status.set("-Playing")
+            pygame.mixer.music.load(self.playlist.get(ACTIVE))
+            pygame.mixer.music.play()
+
+        def stopsong(self):
+            self.status.set("-Stopped")
+            pygame.mixer.music.stop()
+
+        def pausesong(self):
+            self.status.set("-Paused")
+            pygame.mixer.music.pause()
+
+        def unpausesong(self):
+            self.status.set("-Playing")
+            pygame.mixer.music.unpause()
+
+        def back(self):
+            self.root.destroy()
+
+
+    root = Tk()
+    MusicPlayer(root)
+    root.mainloop()
+def fun2():
+    t1=Toplevel()
+    t1.geometry("1006x621")
+    t1.title("The Tedisaurus Game")
+    img5=ImageTk.PhotoImage(Image.open("drag1.PNG"))
+    lbl2 = Label(t1, image=img5)
+    lbl2.grid(row=0, column=0)
+    lbl3=Label(t1,text="welcome to the game")
+    lbl3.place(x=300,y=55)
+    btn4=Button(t1,text="continue",command=fun4)
+    btn4.place(x=500,y=550)
+    t1.mainloop()
+def fun():
+    msgbox=messagebox.askquestion("Exit","wanna quit press yes",icon ="question")
+    print(msgbox)
+    if (msgbox == "yes"):
+        print(t.destroy())
+    else:
+        print(messagebox.showinfo("thank you","welcome again"))
+img1=ImageTk.PhotoImage(Image.open("front.jpg"))
+img2=Image.open("start.png")
+img2=img2.resize((125,50),Image.ANTIALIAS)
+img2=ImageTk.PhotoImage(img2)
+img3=Image.open("option.png")
+img3=img3.resize((100,50),Image.ANTIALIAS)
+img3=ImageTk.PhotoImage(img3)
+img4=Image.open("ouit.png")
+img4=img4.resize((100,50),Image.ANTIALIAS)
+img4=ImageTk.PhotoImage(img4)
+lbl1=Label(t,image=img1)
+lbl1.grid(row=0,column=0)
+btn1=Button(t,text="START",font=("algerian",22),image=img2,border=0,command=fun2)
+btn1.place(x=200,y=300,)
+btn2=Button(t,text="OPTION",font=("algerian",22),image=img3,border=0,command=fun3)
+btn2.place(x=215,y=385,)
+btn3=Button(t,text="EXIT",font=("algerian",22),image=img4,border=0,command=fun)
+btn3.place(x=217,y=465,)
+t.mainloop()
